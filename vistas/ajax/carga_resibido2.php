@@ -1,0 +1,1 @@
+<input style=" background-color:#F5B7B1; border-radius: 5px; border: 1px solid #39c; text-align: center;" type="hidden" class="form-control resibido" pattern="^[0-9]{1,5}(\.[0-9]{0,2})?$" title="Ingresa sólo números con 0 ó 2 decimales" maxlength="8" autocomplete="off" id="resibido" name="resibido" tabindex="3">
