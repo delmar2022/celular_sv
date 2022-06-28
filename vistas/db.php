@@ -10,7 +10,7 @@ class dbConexion
 	var $dbhost = "localhost";
 	var $username = "root";
 	var $password = "";
-	var $dbname = "bdfactura_sv";
+	var $dbname = "bdcelular_sv";
 	var $conn;
 	//Funcion de conexion MySQL
 	function getConexion()
