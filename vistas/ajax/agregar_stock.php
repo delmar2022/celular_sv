@@ -1,6 +1,9 @@
 <?php
 include 'is_logged.php'; //Archivo verifica que el usario que intenta acceder a la URL esta logueado
 $id_producto = $_SESSION['id'];
+$user_id = $_SESSION['id_users'];
+$cargo_users = $_SESSION['cargo_users'];
+$sucursal_users = $_SESSION['sucursal_users'];
 /*Inicia validacion del lado del servidor*/
 if (empty($_POST['quantity'])) {
     $errors[] = "Cantidad vacía";
@@ -11,20 +14,20 @@ if (empty($_POST['quantity'])) {
     require_once "../funciones.php";
     // escaping, additionally removing everything that could be (html/javascript-) code
     $quantity  = intval($_POST['quantity']);
+    $sucursal  = 0;
     $reference = mysqli_real_escape_string($conexion, (strip_tags($_POST["reference"], ENT_QUOTES)));
     $motivo    = mysqli_real_escape_string($conexion, (strip_tags($_POST["motivo"], ENT_QUOTES)));
-    $user_id   = $_SESSION['id_users'];
     $nota      = "agregó $quantity producto(s) al inventario";
     $fecha     = date("Y-m-d H:i:s");
     $tipo      = 1;
-    guardar_historial($id_producto, $user_id, $fecha, $nota, $reference, $quantity, $tipo, $motivo);
+    guardar_historial($id_producto, $user_id, $fecha, $nota, $reference, $quantity, $tipo, $sucursal);
     $update = agregar_stock($id_producto, $quantity);
 
     //GURDAMOS LAS ENTRADAS EN EL KARDEX
     //$costo_producto = get_row('productos', 'moneda', 'id_perfil', 1);
     $sql_kardex  = mysqli_query($conexion, "select * from kardex where producto_kardex='" . $id_producto . "' order by id_kardex DESC LIMIT 1");
     $rww         = mysqli_fetch_array($sql_kardex);
-    $costo       = $rww['costo_saldo'];
+    $costo       = isset($rww['costo_saldo']);
     $saldo_total = $quantity * $costo;
     $cant_saldo  = $rww['cant_saldo'] + $quantity;
     //$nueva_cantidad = $cant_saldo - $cantidad;
@@ -44,29 +47,29 @@ if (empty($_POST['quantity'])) {
 
 if (isset($errors)) {
 
-    ?>
+?>
     <div class="alert alert-danger" role="alert">
         <strong>Error!</strong>
         <?php
-foreach ($errors as $error) {
-        echo $error;
-    }
-    ?>
+        foreach ($errors as $error) {
+            echo $error;
+        }
+        ?>
     </div>
-    <?php
+<?php
 }
 if (isset($messages)) {
 
-    ?>
+?>
     <div class="alert alert-success" role="alert">
         <strong>¡Bien hecho!</strong>
         <?php
-foreach ($messages as $message) {
-        echo $message;
-    }
-    ?>
+        foreach ($messages as $message) {
+            echo $message;
+        }
+        ?>
     </div>
-    <?php
+<?php
 }
 
 ?>

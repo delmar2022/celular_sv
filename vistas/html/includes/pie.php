@@ -1,3 +1,3 @@
 <footer class="footer text-right">
-			2017 © softwys. Derechos reservados
+			2022 © Derechos reservados
 		</footer>

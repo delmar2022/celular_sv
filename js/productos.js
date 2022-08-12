@@ -6,6 +6,7 @@ $(document).ready(function () {
 function load(page) {
   var q = $("#q").val();
   var categoria = $("#categoria").val();
+  var estadoo = $("#estadoo").val();
   $("#loader").fadeIn("slow");
   $.ajax({
     url:
@@ -14,7 +15,9 @@ function load(page) {
       "&q=" +
       q +
       "&categoria=" +
-      categoria,
+      categoria +
+      "&estadoo=" +
+      estadoo,
     beforeSend: function (objeto) {
       $("#loader").html('<img src="../../img/ajax-loader.gif"> Cargando...');
     },

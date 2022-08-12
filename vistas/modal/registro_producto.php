@@ -72,10 +72,10 @@ if (isset($conexion)) {
 												<option value="">-- Selecciona --</option>
 												<?php
 
-												$query_categoria2 = mysqli_query($conexion, "select * from sub_lineas order by nombre_linea2");
+												$query_categoria2 = mysqli_query($conexion, "select * from lineas order by nombre_linea");
 												while ($rw = mysqli_fetch_array($query_categoria2)) {
 												?>
-													<option value="<?php echo $rw['id_linea2']; ?>"><?php echo $rw['nombre_linea2']; ?></option>
+													<option value="<?php echo $rw['id_linea']; ?>"><?php echo $rw['nombre_linea']; ?></option>
 												<?php
 												}
 												?>

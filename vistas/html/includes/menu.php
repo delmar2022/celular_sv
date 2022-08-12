@@ -4,7 +4,7 @@
 	<!-- LOGO -->
 	<div class="topbar-left">
 		<div class="text-center">
-			<a href="#" class="logo"><i class="mdi mdi-radar"></i> <span>SOFTWYS</span></a>
+			<a href="#" class="logo"><i class="mdi mdi-cellphone-iphone"></i><span>MR. PHONE</span></a>
 		</div>
 	</div>
 
@@ -100,7 +100,7 @@
 					<ul class="list-unstyled">
 						<li><a href="../html/new_venta.php">Nueva Venta</a></li>
 						<li><a href="../html/bitacora_ventas.php">Bitácora de Ventas</a></li>
-						<!--<li><a href="../html/caja.php">Caja</a></li>-->
+						<li><a href="../html/caja.php">Cobros en Caja</a></li>
 					</ul>
 				</li>
 				<li class="has_sub">
@@ -115,7 +115,7 @@
 					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-harddrive"></i><span> Caja
 						</span> <span class="menu-arrow"></span></a>
 					<ul class="list-unstyled">
-						<li><a href="../html/admin_caja.php">Egresos de Efectivo</a></li>
+						<li><a href="../html/admin_caja.php">Admin de Efectivo</a></li>
 						<li><a href="../html/bitacora_caja.php">Bitácora de Caja</a></li>
 					</ul>
 				</li>

@@ -6,14 +6,14 @@
 	<meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
 	<meta name="author" content="Coderthemes">
 
-	<link rel="shortcut icon" href="../../assets/images/favicon.png">
+	<link rel="shortcut icon" href="../../assets/images/favicon.ico">
 	<!-- daterange picker -->
 	<link rel="stylesheet" href="../../assets/plugins/datepicker/datepicker3.css">
 	<link href="../../assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 	<!-- librerias para la busqueda de de autocomplete -->
 	<link type="text/css" href="../../js/jquery-ui.css" rel="stylesheet"  />
 
-	<title>Facturacón V.3</title>
+	<title>Mr.Phone</title>
 
 	<!-- Sweet Alert css -->
 	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />

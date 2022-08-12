@@ -20,7 +20,7 @@ if (empty($_POST['quantity_remove'])) {
     guardar_historial($id_producto, $user_id, $fecha, $nota, $reference, $quantity, $tipo, $motivo);
     $update = eliminar_stock($id_producto, $quantity);
 
-//GURDAMOS LAS EN EL KARDEX
+    //GURDAMOS LAS EN EL KARDEX
     $sql_kardex  = mysqli_query($conexion, "select * from kardex where producto_kardex='" . $id_producto . "' order by id_kardex DESC LIMIT 1");
     $rww         = mysqli_fetch_array($sql_kardex);
     $costo       = $rww['costo_saldo'];
@@ -33,7 +33,7 @@ if (empty($_POST['quantity_remove'])) {
     $tip         = 4;
 
     guardar_salidas($fecha, $id_producto, $quantity, $costo, $saldo_total, $cant_saldo, $costo_saldo, $nuevo_saldo, $fecha, $user_id, $tip);
-// FIN
+    // FIN
 
     if ($update) {
         $messages[] = "El Stock  ha sido Eliminado satisfactoriamente.";
@@ -46,30 +46,30 @@ if (empty($_POST['quantity_remove'])) {
 
 if (isset($errors)) {
 
-    ?>
+?>
     <div class="alert alert-danger" role="alert">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Error!</strong>
         <?php
-foreach ($errors as $error) {
-        echo $error;
-    }
-    ?>
+        foreach ($errors as $error) {
+            echo $error;
+        }
+        ?>
     </div>
-    <?php
+<?php
 }
 if (isset($messages)) {
 
-    ?>
+?>
     <div class="alert alert-success" role="alert">
         <strong>¡Bien hecho!</strong>
         <?php
-foreach ($messages as $message) {
-        echo $message;
-    }
-    ?>
+        foreach ($messages as $message) {
+            echo $message;
+        }
+        ?>
     </div>
-    <?php
+<?php
 }
 
 ?>

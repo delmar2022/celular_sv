@@ -14,16 +14,20 @@ $action = (isset($_REQUEST['action']) && $_REQUEST['action'] != null) ? $_REQUES
 if ($action == 'ajax') {
     // escaping, additionally removing everything that could be (html/javascript-) code
     $q        = mysqli_real_escape_string($conexion, (strip_tags($_REQUEST['q'], ENT_QUOTES)));
-    $aColumns = array('codigo_producto', 'nombre_producto'); //Columnas de busqueda
-    $sTable   = "productos";
-    $sWhere   = "";
+    $id_categoria = intval($_REQUEST['categoria']);
+    $estado = intval($_REQUEST['estadoo']);
+    $sTable = "productos, lineas";
+    $sWhere = "";
+    $sWhere .= " WHERE productos.modelo_producto=lineas.id_linea";
+
     if ($_GET['q'] != "") {
-        $sWhere = "WHERE (";
-        for ($i = 0; $i < count($aColumns); $i++) {
-            $sWhere .= $aColumns[$i] . " LIKE '%" . $q . "%' OR ";
-        }
-        $sWhere = substr_replace($sWhere, "", -3);
-        $sWhere .= ')';
+        $sWhere .= " and (productos.codigo_producto like '%$q%' or productos.nombre_producto like '%$q%' or productos.color_producto like '%$q%' or lineas.nombre_linea like '%$q%')";
+    }
+    if ($id_categoria > 0) {
+        $sWhere .= " and productos.modelo_producto = '" . $id_categoria . "' ";
+    }
+    if ($estado > 0) {
+        $sWhere .= " and estado_producto = '" . $estado . "' ";
     }
     include 'pagination.php'; //include pagination file
     //pagination variables
@@ -49,77 +53,84 @@ if ($action == 'ajax') {
             $ok = '';
         }
 
-        ?>
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped table-sm">
-                <tr  class="info">
-                    <th></th>
+?>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm">
+                <tr class="info">
                     <th>COD.</th>
                     <th class='text-center'>PRODUCTOS</th>
+                    <th class='text-center'>MODELO</th>
+                    <th class='text-center'>COLOR</th>
+                    <th class='text-center'>ESTADO</th>
                     <th class='text-center'>STOCK</th>
                     <th class='text-center'>CANT</th>
                     <th class='text-center'>PRECIO</th>
                     <th class='text-center' style="width: 36px;"></th>
                 </tr>
                 <?php
-while ($row = mysqli_fetch_array($query)) {
-            $id_producto     = $row['id_producto'];
-            $codigo_producto = $row['codigo_producto'];
-            $nombre_producto = $row['nombre_producto'];
-            $stock_producto  = $row['stock_producto'];
-            $precio_venta    = $row["valor1_producto"];
-            $precio_venta    = number_format($precio_venta, 2, '.', '');
-            $image_path      = $row['image_path'];
-            ?>
+                while ($row = mysqli_fetch_array($query)) {
+                    $id_producto     = $row['id_producto'];
+                    $codigo_producto = $row['codigo_producto'];
+                    $nombre_producto = $row['nombre_producto'];
+                    $stock_producto  = $row['stock_producto'];
+                    $precio_venta    = $row["precio_producto"];
+                    $marca_producto       = $row['marca_producto'];
+                    $modelo_producto      = $row['modelo_producto'];
+                    $estado_producto      = $row['estado_producto'];
+                    $color_producto       = $row['color_producto'];
+                    $precio_venta    = number_format($precio_venta, 2, '.', '');
+                    $image_path      = $row['image_path'];
+                    if ($estado_producto == 1) {
+                        $estado = "<span class='badge badge-success'>Nuevo</span>";
+                    } else {
+                        $estado = "<span class='badge badge-danger'>Usado</span>";
+                    }
+                    $marca = get_row('marcas', 'nombre_marca', 'id_marca', $marca_producto);
+                    $modelo = get_row('lineas', 'nombre_linea', 'id_linea', $modelo_producto);
+                ?>
                     <tr>
-                        <td class='text-center'>
-                        <?php
-if ($image_path == null) {
-                echo '<img src="../../img/productos/default.jpg" class="" width="60">';
-            } else {
-                echo '<img src="' . $image_path . '" class="" width="60">';
-            }
-
-            ?>
-                                <!--<img src="<?php echo $image_path; ?>" alt="Product Image" class='rounded-circle' width="60">-->
-                            </td>
-                            <td><?php echo $codigo_producto; ?></td>
+                        <td><?php echo $codigo_producto; ?></td>
                         <td><?php echo $nombre_producto; ?></td>
+                        <td><?php echo $modelo; ?></td>
+                        <td><?php echo $color_producto; ?></td>
+                        <td><?php echo $estado; ?></td>
                         <td class="text-center"><?php echo stock($stock_producto); ?></td>
                         <td class='col-xs-1' width="15%">
-                        <div class="pull-right">
-                        <input type="text" class="form-control" style="text-align:center" id="cantidad_<?php echo $id_producto; ?>"  value="1" >
-                        </div>
+                            <div class="pull-right">
+                                <input type="text" class="form-control" style="text-align:center" id="cantidad_<?php echo $id_producto; ?>" value="1">
+                            </div>
                         </td>
-                        <td class='col-xs-2' width="15%"><div class="pull-right">
-                        <input type="text" class="form-control" style="text-align:right" id="precio_venta_<?php echo $id_producto; ?>"  value="<?php echo $precio_venta; ?>" <?php echo $ok; ?> >
-                        </div></td>
+                        <td class='col-xs-2' width="15%">
+                            <div class="pull-right">
+                                <input type="text" class="form-control" style="text-align:right" id="precio_venta_<?php echo $id_producto; ?>" value="<?php echo $precio_venta; ?>" <?php echo $ok; ?>>
+                            </div>
+                        </td>
                         <td class='text-center'>
-                        <a class='btn btn-success' href="#" title="Agregar a Factura" onclick="agregar('<?php echo $id_producto ?>')"><i class="fa fa-plus"></i>
-                        </a>
+                            <a class='btn btn-success' href="#" title="Agregar a Factura" onclick="agregar('<?php echo $id_producto ?>')"><i class="fa fa-plus"></i>
+                            </a>
                         </td>
                     </tr>
-                    <?php
-}
-        ?>
+                <?php
+                }
+                ?>
                 <tr>
-                    <td colspan=6><span class="pull-right">
-                    <?php
-echo paginate($reload, $page, $total_pages, $adjacents);
-        ?></span></td>
+                    <td colspan=9><span class="pull-right">
+                            <?php
+                            echo paginate($reload, $page, $total_pages, $adjacents);
+                            ?></span></td>
                 </tr>
-              </table>
-            </div>
-            <?php
-}
-//Este else Fue agregado de Prueba de prodria Quitar
+            </table>
+        </div>
+    <?php
+    }
+    //Este else Fue agregado de Prueba de prodria Quitar
     else {
-        ?>
-    <div class="alert alert-warning alert-dismissible" role="alert" align="center">
-      <strong>Aviso!</strong> No hay Registro de Producto
-  </div>
-  <?php
-}
-// fin else
+    ?>
+        <div class="alert alert-warning alert-dismissible" role="alert" align="center">
+            <strong>Aviso!</strong> No hay Registro de Producto
+        </div>
+<?php
+    }
+    // fin else
 }
 ?>

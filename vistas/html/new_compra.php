@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_login_status']) and $_SESSION['user_login_status'] != 1) {
-    header("location: ../../login.php");
-    exit;
+	header("location: ../../login.php");
+	exit;
 }
 /* Connect To Database*/
 require_once "../db.php"; //Contiene las variables de configuracion para conectar a la base de datos
@@ -24,14 +24,19 @@ $ape           = get_row('users', 'apellido_users', 'id_users', $user_id);
 
 ?>
 
-<?php require 'includes/header_start.php';?>
-
-<?php require 'includes/header_end.php';?>
+<?php require 'includes/header_start.php'; ?>
+<style>
+	.modal-lg {
+		max-width: 80% !important;
+	}
+</style>
+<?php require 'includes/header_end.php'; ?>
 
 <!-- Begin page -->
-<div id="wrapper" class="forced enlarged"> <!-- DESACTIVA EL MENU -->
+<div id="wrapper" class="forced enlarged">
+	<!-- DESACTIVA EL MENU -->
 
-	<?php require 'includes/menu.php';?>
+	<?php require 'includes/menu.php'; ?>
 
 	<!-- ============================================================== -->
 	<!-- Start right Content here -->
@@ -41,7 +46,7 @@ $ape           = get_row('users', 'apellido_users', 'id_users', $user_id);
 		<div class="content">
 			<div class="container">
 				<?php if ($permisos_ver == 1) {
-    ?>
+				?>
 					<div class="col-lg-12">
 						<div class="portlet">
 							<div class="portlet-heading bg-primary">
@@ -60,11 +65,11 @@ $ape           = get_row('users', 'apellido_users', 'id_users', $user_id);
 							<div id="bg-primary" class="panel-collapse collapse show">
 								<div class="portlet-body">
 									<?php
-include "../modal/buscar_productos_compras.php";
-    include "../modal/registro_proveedor.php";
-    include "../modal/registro_producto.php";
-    //include "../modal/caja.php";
-    ?>
+									include "../modal/buscar_productos_compras.php";
+									include "../modal/registro_proveedor.php";
+									include "../modal/registro_producto.php";
+									//include "../modal/caja.php";
+									?>
 									<div class="row">
 										<div class="col-lg-8">
 											<div class="card-box">
@@ -77,7 +82,7 @@ include "../modal/buscar_productos_compras.php";
 															<label for="condiciones" class="control-label">CODIGO:</label>
 															<div class="col-md-5" align="left">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="barcode" autocomplete="off"  tabindex="1" autofocus="true" >
+																	<input type="text" class="form-control" id="barcode" autocomplete="off" tabindex="1" autofocus="true">
 																	<span class="input-group-btn">
 																		<button type="submit" class="btn btn-default"><span class="fa fa-barcode"></span></button>
 																	</span>
@@ -117,9 +122,11 @@ include "../modal/buscar_productos_compras.php";
 															<div class="col-12">
 																<label for="fiscal">PROVEEDOR</label>
 																<div class="input-group">
-																	<input type="text" id="nombre_proveedor" class="form-control" placeholder="Buscar Proveedor" required  tabindex="2">
+																	<input type="text" id="nombre_proveedor" class="form-control" placeholder="Buscar Proveedor" required tabindex="2">
 																	<span class="input-group-btn">
-																		<button type="button" class="btn waves-effect waves-light btn-success" data-toggle="modal" data-target="#nuevoProveedor" title="Agregar Proveedor"><li class="fa fa-plus"></li></button>
+																		<button type="button" class="btn waves-effect waves-light btn-success" data-toggle="modal" data-target="#nuevoProveedor" title="Agregar Proveedor">
+																			<li class="fa fa-plus"></li>
+																		</button>
 																	</span>
 																	<input id="id_proveedor" name="id_proveedor" type='hidden'>
 																</div>
@@ -163,7 +170,7 @@ include "../modal/buscar_productos_compras.php";
 															<div class="col-md-6">
 																<div class="form-group">
 																	<label for="fecha">FECHA</label>
-																	<input type="date" class="form-control" id="fecha" name="fecha" required  tabindex="4">
+																	<input type="date" class="form-control" id="fecha" name="fecha" required tabindex="4">
 																</div>
 															</div>
 															<div class="col-md-6">
@@ -174,12 +181,12 @@ include "../modal/buscar_productos_compras.php";
 															</div>
 														</div>
 
-														<?php if ($permisos_editar == 1) {?>
-														<div class="col-md-12" align="center">
-															<button type="submit" id="guardar_factura" class="btn btn-danger btn-block btn-lg waves-effect waves-light"><span class="fa fa-print"></span> Guardar</button>
-															<!--<a href="#" onclick="imprimir_factura('1');"><i class="glyphicon glyphicon-download"></i> PDF</a>-->
-														</div>
-														<?php }?>
+														<?php if ($permisos_editar == 1) { ?>
+															<div class="col-md-12" align="center">
+																<button type="submit" id="guardar_factura" class="btn btn-danger btn-block btn-lg waves-effect waves-light"><span class="fa fa-print"></span> Guardar</button>
+																<!--<a href="#" onclick="imprimir_factura('1');"><i class="glyphicon glyphicon-download"></i> PDF</a>-->
+															</div>
+														<?php } ?>
 													</form>
 
 												</div>
@@ -195,25 +202,25 @@ include "../modal/buscar_productos_compras.php";
 							</div>
 						</div>
 					</div>
-					<?php
-} else {
-    ?>
+				<?php
+				} else {
+				?>
 					<section class="content">
 						<div class="alert alert-danger" align="center">
 							<h3>Acceso denegado! </h3>
 							<p>No cuentas con los permisos necesario para acceder a este módulo.</p>
 						</div>
 					</section>
-					<?php
-}
-?>
+				<?php
+				}
+				?>
 
 			</div>
 			<!-- end container -->
 		</div>
 		<!-- end content -->
 
-		<?php require 'includes/pie.php';?>
+		<?php require 'includes/pie.php'; ?>
 
 	</div>
 	<!-- ============================================================== -->
@@ -243,7 +250,7 @@ include "../modal/buscar_productos_compras.php";
 				$('#id_proveedor').val(ui.item.id_proveedor);
 				$('#nombre_proveedor').val(ui.item.nombre_proveedor);
 				$('#tel1').val(ui.item.fiscal_proveedor);
-				$.Notification.notify('custom','bottom right','EXITO!', 'PROVEEDOR AGREGADO CORRECTAMENTE')
+				$.Notification.notify('custom', 'bottom right', 'EXITO!', 'PROVEEDOR AGREGADO CORRECTAMENTE')
 
 			}
 		});
@@ -251,30 +258,28 @@ include "../modal/buscar_productos_compras.php";
 
 	});
 
-	$("#nombre_proveedor" ).on( "keydown", function( event ) {
-		if (event.keyCode== $.ui.keyCode.LEFT || event.keyCode== $.ui.keyCode.RIGHT || event.keyCode== $.ui.keyCode.UP || event.keyCode== $.ui.keyCode.DOWN || event.keyCode== $.ui.keyCode.DELETE || event.keyCode== $.ui.keyCode.BACKSPACE )
-		{
-			$("#id_proveedor" ).val("");
-			$("#tel1" ).val("");
+	$("#nombre_proveedor").on("keydown", function(event) {
+		if (event.keyCode == $.ui.keyCode.LEFT || event.keyCode == $.ui.keyCode.RIGHT || event.keyCode == $.ui.keyCode.UP || event.keyCode == $.ui.keyCode.DOWN || event.keyCode == $.ui.keyCode.DELETE || event.keyCode == $.ui.keyCode.BACKSPACE) {
+			$("#id_proveedor").val("");
+			$("#tel1").val("");
 
 		}
-		if (event.keyCode==$.ui.keyCode.DELETE){
-			$("#nombre_proveedor" ).val("");
-			$("#id_proveedor" ).val("");
-			$("#tel1" ).val("");
+		if (event.keyCode == $.ui.keyCode.DELETE) {
+			$("#nombre_proveedor").val("");
+			$("#id_proveedor").val("");
+			$("#tel1").val("");
 		}
 	});
 </script>
 <!-- FIN -->
 <script>
-	function showDiv(select){
-		if(select.value==4){
+	function showDiv(select) {
+		if (select.value == 4) {
 			$("#resultados2").load("../ajax/carga_prima2.php");
-		} else{
+		} else {
 			$("#resultados2").load("../ajax/carga_resibido2.php");
 		}
 	}
 </script>
 <?php require 'includes/footer_end.php'
 ?>
-

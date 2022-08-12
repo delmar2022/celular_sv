@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_login_status']) and $_SESSION['user_login_status'] != 1) {
-    header("location: ../../login.php");
-    exit;
+	header("location: ../../login.php");
+	exit;
 }
 /* Connect To Database*/
 require_once "../db.php"; //Contiene las variables de configuracion para conectar a la base de datos
@@ -18,30 +18,30 @@ permisos($modulo, $cadena_permisos);
 $title     = "Productos";
 $Productos = 1;
 if (isset($_GET['id'])) {
-    $id_producto  = intval($_GET['id']);
-    $sql_producto = mysqli_query($conexion, "select * from productos where id_producto='$id_producto'");
-    $count        = mysqli_num_rows($sql_producto);
-    if ($count == 1) {
-        $rw_factura     = mysqli_fetch_array($sql_producto);
-        $_SESSION['id'] = $id_producto;
-    } else {
-        header("location: ../html/productos.php");
-        exit;
-    }
+	$id_producto  = intval($_GET['id']);
+	$sql_producto = mysqli_query($conexion, "select * from productos where id_producto='$id_producto'");
+	$count        = mysqli_num_rows($sql_producto);
+	if ($count == 1) {
+		$rw_factura     = mysqli_fetch_array($sql_producto);
+		$_SESSION['id'] = $id_producto;
+	} else {
+		header("location: ../html/productos.php");
+		exit;
+	}
 } else {
-    header("location: ../html/productos.php");
-    exit;
+	header("location: ../html/productos.php");
+	exit;
 }
 ?>
 
-<?php require 'includes/header_start.php';?>
+<?php require 'includes/header_start.php'; ?>
 
-<?php require 'includes/header_end.php';?>
+<?php require 'includes/header_end.php'; ?>
 
 <!-- Begin page -->
 <div id="wrapper">
 
-	<?php require 'includes/menu.php';?>
+	<?php require 'includes/menu.php'; ?>
 
 	<!-- ============================================================== -->
 	<!-- Start right Content here -->
@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
 		<div class="content">
 			<div class="container">
 				<?php if ($permisos_ver == 1) {
-    ?>
+				?>
 					<div class="col-lg-12">
 						<div class="portlet">
 							<div class="portlet-heading bg-primary">
@@ -71,7 +71,7 @@ if (isset($_GET['id'])) {
 								<div class="portlet-body">
 									<div class="row">
 										<div class="col-lg-4">
-										<!--<div class="card-box widget-user">
+											<!--<div class="card-box widget-user">
 											<div>
 												<img src="../../img/stock.png" class="img-responsive img-circle" alt="user">
 												<div class="wid-u-info">
@@ -82,127 +82,129 @@ if (isset($_GET['id'])) {
 											</div>
 										</div>-->
 
-										<div class="col-lg-12 col-md-6">
-											<div class="widget-bg-color-icon card-box">
-												<div class="bg-icon bg-icon-purple pull-left">
-													<i class="ti-home text-purple"></i>
-												</div>
-												<div class="text-center">
-													<p class="text-muted m-b-5 font-16 font-bold text-uppercase"><?php echo $rw_factura['nombre_producto']; ?></p>
-													<p class="text-muted m-b-5 font-14 font-bold text-uppercase"><b class="counter">CODIGO: <?php echo $rw_factura['codigo_producto']; ?></b></p>
-													<a class='btn btn-primary waves-effect waves-light btn-sm m-b-5' href="productos.php" title="Regresar al listado de Productos"><i class="fa fa-reply"></i> Regresar
-													</a>
-												</div>
-												<div class="clearfix"></div>
-											</div>
-										</div>
-										<div class="col-lg-12 col-md-6">
-											<div class="card-box widget-icon">
-												<div>
-													<i class="mdi mdi-briefcase-check text-info"></i>
-													<div class="wid-icon-info text-center">
-														<p class="text-muted m-b-5 font-14 font-bold text-uppercase">EXISTENCIA</p>
-														<p class="m-t-0 m-b-5 counter font-18 font-bold text-primary"><?php echo stock($rw_factura['stock_producto']); ?></p>
+											<div class="col-lg-12 col-md-6">
+												<div class="widget-bg-color-icon card-box">
+													<div class="bg-icon bg-icon-purple pull-left">
+														<i class="ti-home text-purple"></i>
 													</div>
-												</div>
-											</div>
-										</div>
-
-										<div class="card-box">
-											<div class="widget-chart text-center">
-												<div class='row'>
-													<?php
-include "../modal/agregar_stock.php";
-    include "../modal/eliminar_stock.php";
-    ?>
-													<div class="col-md-12" align="center">
-														<button type="button" class="btn btn-success btn-block btn-lg waves-effect waves-light" data-toggle="modal" data-target="#add-stock"><i class="fa fa-edit"></i> Agregar Stock</button>
-														<button type="button" class="btn btn-danger btn-block btn-lg waves-effect waves-light" data-toggle="modal" data-target="#remove-stock"><i class="fa fa-trash"></i> Eliminar Stock</button>
+													<div class="text-center">
+														<p class="text-muted m-b-5 font-16 font-bold text-uppercase"><?php echo $rw_factura['nombre_producto']; ?></p>
+														<p class="text-muted m-b-5 font-14 font-bold text-uppercase"><b class="counter">CODIGO: <?php echo $rw_factura['codigo_producto']; ?></b></p>
+														<a class='btn btn-primary waves-effect waves-light btn-sm m-b-5' href="productos.php" title="Regresar al listado de Productos"><i class="fa fa-reply"></i> Regresar
+														</a>
 													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="col-lg-8">
-										<div class="panel panel-color panel-info">
-											<div class="panel-body">
-												<form class="form-horizontal" role="form" id="datos_cotizacion">
-													<div class="form-group row">
-														<div class="col-xs-4">
-															<div class="input-group">
-																<div class="input-group-addon">
-																	<i class="fa fa-calendar"></i>
-																</div>
-																<input type="text" class="form-control daterange pull-right" value="<?php echo "01" . date('/m/Y') . ' - ' . date('d/m/Y'); ?>" id="range" readonly>
-
-															</div><!-- /input-group -->
-														</div>
-														<div class="col-xs-4">
-															<div class="input-group">
-																<select class='form-control' id="tipo" name="tipo" onchange="load(1);">
-																	<option value="">Selecciona Tipo</option>
-																	<option value="">Todos</option>
-																	<option value="1">Entradas</option>
-																	<option value="2">Salidas</option>
-																</select>
-																<span class="input-group-btn">
-																	<button class="btn btn-primary" type="button" onclick='load(1);'><i class='fa fa-search'></i></button>
-																</span>
-															</div>
-														</div>
-
-														<div class="col-xs-3">
-															<div id="loader" class="text-left"></div>
-														</div>
-
-														<div class="col-xs-1 ">
-															<div class="btn-group pull-center">
-																<?php if ($permisos_ver == 1) {?>
-																<button type="button"  onclick="reporte();" class="btn btn-default waves-effect waves-light" title="Imprimir"><i class='fa fa-print'></i></button>
-																<?php }?>
-															</div>
-														</div>
-
-													</div>
-												</form>
-												<div class="col-md-12" align="center">
 													<div class="clearfix"></div>
-													<div class='outer_div'></div><!-- Carga los datos ajax -->
+												</div>
+											</div>
+											<div class="col-lg-12 col-md-6">
+												<div class="card-box widget-icon">
+													<div>
+														<i class="mdi mdi-briefcase-check text-info"></i>
+														<div class="wid-icon-info text-center">
+															<p class="text-muted m-b-5 font-14 font-bold text-uppercase">EXISTENCIA</p>
+															<p class="m-t-0 m-b-5 counter font-18 font-bold text-primary"><?php echo stock($rw_factura['stock_producto']); ?></p>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="card-box">
+												<div class="widget-chart text-center">
+													<div class='row'>
+														<?php
+														include "../modal/agregar_stock.php";
+														include "../modal/eliminar_stock.php";
+														include "../modal/agregar_cambio.php";
+														?>
+														<div class="col-md-12" align="center">
+															<button type="button" class="btn btn-success btn-block btn-lg waves-effect waves-light" data-toggle="modal" data-target="#add-stock"><i class="fa fa-edit"></i> Agregar Stock</button>
+															<button type="button" class="btn btn-danger btn-block btn-lg waves-effect waves-light" data-toggle="modal" data-target="#remove-stock"><i class="fa fa-trash"></i> Eliminar Stock</button>
+															<button type="button" class="btn btn-primary btn-block btn-lg waves-effect waves-light" data-toggle="modal" data-target="#cambio-stock"><i class="fa fa-random"></i> Intercambio</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-8">
+											<div class="panel panel-color panel-info">
+												<div class="panel-body">
+													<form class="form-horizontal" role="form" id="datos_cotizacion">
+														<div class="form-group row">
+															<div class="col-xs-4">
+																<div class="input-group">
+																	<div class="input-group-addon">
+																		<i class="fa fa-calendar"></i>
+																	</div>
+																	<input type="text" class="form-control daterange pull-right" value="<?php echo "01" . date('/m/Y') . ' - ' . date('d/m/Y'); ?>" id="range" readonly>
+
+																</div><!-- /input-group -->
+															</div>
+															<div class="col-xs-4">
+																<div class="input-group">
+																	<select class='form-control' id="tipo" name="tipo" onchange="load(1);">
+																		<option value="">Selecciona Tipo</option>
+																		<option value="">Todos</option>
+																		<option value="1">Entradas</option>
+																		<option value="2">Salidas</option>
+																	</select>
+																	<span class="input-group-btn">
+																		<button class="btn btn-primary" type="button" onclick='load(1);'><i class='fa fa-search'></i></button>
+																	</span>
+																</div>
+															</div>
+
+															<div class="col-xs-3">
+																<div id="loader" class="text-left"></div>
+															</div>
+
+															<div class="col-xs-1 ">
+																<div class="btn-group pull-center">
+																	<?php if ($permisos_ver == 1) { ?>
+																		<button type="button" onclick="reporte();" class="btn btn-default waves-effect waves-light" title="Imprimir"><i class='fa fa-print'></i></button>
+																	<?php } ?>
+																</div>
+															</div>
+
+														</div>
+													</form>
+													<div class="col-md-12" align="center">
+														<div class="clearfix"></div>
+														<div class='outer_div'></div><!-- Carga los datos ajax -->
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				<?php
-} else {
-    ?>
-				<section class="content">
-					<div class="alert alert-danger" align="center">
-						<h3>Acceso denegado! </h3>
-						<p>No cuentas con los permisos necesario para acceder a este módulo.</p>
-					</div>
-				</section>
+				} else {
+				?>
+					<section class="content">
+						<div class="alert alert-danger" align="center">
+							<h3>Acceso denegado! </h3>
+							<p>No cuentas con los permisos necesario para acceder a este módulo.</p>
+						</div>
+					</section>
 				<?php
-}
-?>
+				}
+				?>
 
+			</div>
+			<!-- end container -->
 		</div>
-		<!-- end container -->
+		<!-- end content -->
+
+		<?php require 'includes/pie.php'; ?>
+
 	</div>
-	<!-- end content -->
-
-	<?php require 'includes/pie.php';?>
-
-</div>
-<!-- ============================================================== -->
-<!-- End Right content here -->
-<!-- ============================================================== -->
+	<!-- ============================================================== -->
+	<!-- End Right content here -->
+	<!-- ============================================================== -->
 
 
 </div>
@@ -216,12 +218,41 @@ include "../modal/agregar_stock.php";
 <script type="text/javascript" src="../../js/ver_historial.js"></script>
 <script type="text/javascript" src="../../js/VentanaCentrada.js"></script>
 <script>
-	$(document).ready( function () {
-		$(".UpperCase").on("keypress", function () {
-			$input=$(this);
-			setTimeout(function () {
+	$(function() {
+		$("#nombre_producto").autocomplete({
+			source: "../ajax/autocomplete/productos.php",
+			minLength: 2,
+			appendTo: "#cambio-stock",
+			select: function(event, ui) {
+				event.preventDefault();
+				$('#id_producto2').val(ui.item.id_producto);
+				$('#nombre_producto').val(ui.item.nombre_producto);
+				$('#quan').val(ui.item.costo_producto);
+				$.Notification.notify('custom', 'bottom right', 'EXITO!', 'PRODUCTO AGREGADO CORRECTAMENTE')
+			}
+		});
+
+	});
+
+	$("#nombre_producto").on("keydown", function(event) {
+		if (event.keyCode == $.ui.keyCode.LEFT || event.keyCode == $.ui.keyCode.RIGHT || event.keyCode == $.ui.keyCode.UP || event.keyCode == $.ui.keyCode.DOWN || event.keyCode == $.ui.keyCode.DELETE || event.keyCode == $.ui.keyCode.BACKSPACE) {
+			$("#id_producto2").val("");
+			$("#quan").val("");
+		}
+		if (event.keyCode == $.ui.keyCode.DELETE) {
+			$("#nombre_producto").val("");
+			$("#id_producto2").val("");
+			$("#quan").val("");
+		}
+	});
+</script>
+<script>
+	$(document).ready(function() {
+		$(".UpperCase").on("keypress", function() {
+			$input = $(this);
+			setTimeout(function() {
 				$input.val($input.val().toUpperCase());
-			},50);
+			}, 50);
 		})
 	})
 </script>
@@ -229,56 +260,55 @@ include "../modal/agregar_stock.php";
 	$(function() {
 		load(1);
 
-//Date range picker
-$('.daterange').daterangepicker({
-	buttonClasses: ['btn', 'btn-sm'],
-	applyClass: 'btn-success',
-	cancelClass: 'btn-default',
-	locale: {
-		format: "DD/MM/YYYY",
-		separator: " - ",
-		applyLabel: "Aplicar",
-		cancelLabel: "Cancelar",
-		fromLabel: "Desde",
-		toLabel: "Hasta",
-		customRangeLabel: "Custom",
-		daysOfWeek: [
-		"Do",
-		"Lu",
-		"Ma",
-		"Mi",
-		"Ju",
-		"Vi",
-		"Sa"
-		],
-		monthNames: [
-		"Enero",
-		"Febrero",
-		"Marzo",
-		"Abril",
-		"Mayo",
-		"Junio",
-		"Julio",
-		"Agosto",
-		"Septiembre",
-		"Octubre",
-		"Noviembre",
-		"Diciembre"
-		],
-		firstDay: 1
-	},
-	opens: "right"
+		//Date range picker
+		$('.daterange').daterangepicker({
+			buttonClasses: ['btn', 'btn-sm'],
+			applyClass: 'btn-success',
+			cancelClass: 'btn-default',
+			locale: {
+				format: "DD/MM/YYYY",
+				separator: " - ",
+				applyLabel: "Aplicar",
+				cancelLabel: "Cancelar",
+				fromLabel: "Desde",
+				toLabel: "Hasta",
+				customRangeLabel: "Custom",
+				daysOfWeek: [
+					"Do",
+					"Lu",
+					"Ma",
+					"Mi",
+					"Ju",
+					"Vi",
+					"Sa"
+				],
+				monthNames: [
+					"Enero",
+					"Febrero",
+					"Marzo",
+					"Abril",
+					"Mayo",
+					"Junio",
+					"Julio",
+					"Agosto",
+					"Septiembre",
+					"Octubre",
+					"Noviembre",
+					"Diciembre"
+				],
+				firstDay: 1
+			},
+			opens: "right"
 
-});
-});
+		});
+	});
 </script>
 <script>
 	function reporte() {
 		var daterange = $("#range").val();
 		var tipo = $("#tipo").val();
-		VentanaCentrada('../pdf/documentos/rep_historial.php?daterange=' + daterange + "&tipo=" + tipo, 'Reporte', '', '800', '600', 'true');
+		VentanaCentrada('../reportes/rep_ajuste.php?daterange=' + daterange + "&tipo=" + tipo, 'Reporte', '', '800', '600', 'true');
 	}
 </script>
 <?php require 'includes/footer_end.php'
 ?>
-

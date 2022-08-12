@@ -21,19 +21,16 @@ while ($row = mysqli_fetch_array($sql)) {
     $precio_venta_f = number_format($precio_venta, 2); //Formateo variables
     $precio_venta_r = str_replace(",", "", $precio_venta_f); //Reemplazo las comas
     $precio_total   = $precio_venta_r * $cantidad;
-    $final_items    = rebajas($precio_total, $desc_tmp); //Aplicando el descuento
+    //$final_items    = rebajas($precio_total, $desc_tmp); //Aplicando el descuento
+    $final_items = $precio_total - $desc_tmp; //Aplicando el descuento
     /*--------------------------------------------------------------------------------*/
     $precio_total_f = number_format($final_items, 2); //Precio total formateado
     $precio_total_r = str_replace(",", "", $precio_total_f); //Reemplazo las comas
     $sumador_total += $precio_total_r; //Sumador
     $subtotal = number_format($sumador_total, 2, '.', '');
-    if ($row['iva_producto'] == 1) {
-        $total_iva = iva($precio_venta);
-    } else {
-        $total_iva = 0;
-    }
+
     $total_impuesto += rebajas($total_iva, $desc_tmp) * $cantidad;
     $total_factura = $subtotal + $total_impuesto;
 }
 ?>
-<input type="hidden" class="form-control" autocomplete="off" id="total_ft" required name="total_ft" value="<?php echo number_format($total_factura, 2); ?>">
+<input type="text" class="form-control" autocomplete="off" id="total_ft" required name="total_ft" value="<?php echo $total_factura; ?>">

@@ -23,20 +23,21 @@ if ($action == 'ajax') {
     // escaping, additionally removing everything that could be (html/javascript-) code
     $q            = mysqli_real_escape_string($conexion, (strip_tags($_REQUEST['q'], ENT_QUOTES)));
     $id_categoria = intval($_REQUEST['categoria']);
-    $aColumns     = array('codigo_producto', 'nombre_producto'); //Columnas de busqueda
-    $sTable       = "productos";
-    $sWhere       = "";
-    if ($id_categoria > 0) {
-        $sWhere .= "WHERE id_linea_producto = '" . $id_categoria . "' ";
-    }
+    $estado = intval($_REQUEST['estadoo']);
+    $sTable = "productos, lineas";
+    $sWhere = "";
+    $sWhere .= " WHERE productos.modelo_producto=lineas.id_linea";
+
     if ($_GET['q'] != "") {
-        $sWhere = "WHERE(";
-        for ($i = 0; $i < count($aColumns); $i++) {
-            $sWhere .= $aColumns[$i] . " LIKE '%" . $q . "%' OR ";
-        }
-        $sWhere = substr_replace($sWhere, "", -3);
-        $sWhere .= ')';
+        $sWhere .= " and (productos.codigo_producto like '%$q%' or productos.nombre_producto like '%$q%' or productos.color_producto like '%$q%' or lineas.nombre_linea like '%$q%')";
     }
+    if ($id_categoria > 0) {
+        $sWhere .= " and productos.modelo_producto = '" . $id_categoria . "' ";
+    }
+    if ($estado > 0) {
+        $sWhere .= " and estado_producto = '" . $estado . "' ";
+    }
+
 
     $sWhere .= " order by codigo_producto asc";
 
@@ -72,8 +73,8 @@ if ($action == 'ajax') {
                     <th>IMEI</th>
                     <th class='text-center'>EXIST.</th>
                     <th class='text-left'>COSTO</th>
-                    <th class='text-left'>PRECIO VENTA</th>
-                    <th>STATUS</th>
+                    <th class='text-left'>P. VENTA</th>
+                    <th>ESTADO</th>
                     <th class='text-right'>ACCIONES</th>
 
                 </tr>
@@ -83,24 +84,24 @@ if ($action == 'ajax') {
                     $codigo_producto      = $row['codigo_producto'];
                     $nombre_producto      = $row['nombre_producto'];
                     $marca_producto       = $row['marca_producto'];
-                    $modelo_producto          = $row['modelo_producto'];
-                    $color_producto    = $row['color_producto'];
-                    $emei_producto      = $row['imei_producto'];
-                    $estado_producto    = $row['estado_producto'];
-                    $costo_producto      = $row['costo_producto'];
-                    $utilidad_producto      = $row['utilidad_producto'];
+                    $modelo_producto      = $row['modelo_producto'];
+                    $color_producto       = $row['color_producto'];
+                    $emei_producto        = $row['imei_producto'];
+                    $estado_producto      = $row['estado_producto'];
+                    $costo_producto       = $row['costo_producto'];
+                    $utilidad_producto    = $row['utilidad_producto'];
                     $precio_producto      = $row['precio_producto'];
                     $status_producto      = $row['status_producto'];
-                    $stock_producto      = $row['stock_producto'];
+                    $stock_producto       = $row['stock_producto'];
                     $date_added           = date('d/m/Y', strtotime($row['date_added']));
                     $image_path           = $row['image_path'];
-                    if ($status_producto == 1) {
-                        $estado = "<span class='badge badge-success'>Activo</span>";
+                    if ($estado_producto == 1) {
+                        $estado = "<span class='badge badge-success'>Nuevo</span>";
                     } else {
-                        $estado = "<span class='badge badge-danger'>Inactivo</span>";
+                        $estado = "<span class='badge badge-danger'>Usado</span>";
                     }
                     $marca = get_row('marcas', 'nombre_marca', 'id_marca', $marca_producto);
-                    $modelo = get_row('sub_lineas', 'nombre_linea2', 'id_linea2', $modelo_producto);
+                    $modelo = get_row('lineas', 'nombre_linea', 'id_linea', $modelo_producto);
                 ?>
 
                     <input type="hidden" value="<?php echo $codigo_producto; ?>" id="codigo_producto<?php echo $id_producto; ?>">
@@ -146,7 +147,8 @@ if ($action == 'ajax') {
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editarProducto" onclick="obtener_datos('<?php echo $id_producto; ?>');carga_img('<?php echo $id_producto; ?>');"><i class='fa fa-edit'></i> Editar</a>
                                     <?php }
                                     if ($permisos_editar == 1) { ?>
-                                        <!--<a class="dropdown-item" href="historial.php?id=<?php echo $id_producto; ?>"><i class='fa fa-calendar'></i> Historial</a>-->
+                                        <a class="dropdown-item" href="historial.php?id=<?php echo $id_producto; ?>"><i class='fa fa-calendar'></i> Ajuste Inventario</a>
+                                        <a class="dropdown-item" href="kardex.php?id=<?php echo $id_producto; ?>"><i class='fa fa-calendar'></i> Kardex</a>
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#dataDelete" data-id="<?php echo $id_producto; ?>"><i class='fa fa-trash'></i> Borrar</a>
                                     <?php }
                                     ?>

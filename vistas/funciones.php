@@ -177,7 +177,7 @@ function poner_inventario()
     $lowStockSql   = "SELECT * FROM productos WHERE stock_producto <= 3 AND estado_producto = 1";
     $lowStockQuery = $conexion->query($lowStockSql);
 
-    echo '' . $countLowStock . '';
+    echo '$countLowStock';
 }
 /*--------------------------------------------------------------*/
 /* Funcion para obtener las Ultimas Ventas
@@ -201,13 +201,13 @@ function latest_order()
         list($Y, $m, $d)   = explode("-", $date);
         $fecha             = $d . "-" . $m . "-" . $Y;
         $total             = number_format($rw['monto_factura'], 2);
-        ?>
+?>
         <tr>
             <td><a href="editar_venta.php?id_factura=<?php echo $id_factura; ?>" data-toggle="tooltip" title="Ver Factura"><label class='badge badge-primary'><?php echo $numero_factura; ?></label></a></td>
             <td><?php echo $fecha; ?></td>
             <td class='text-left'><b><?php echo $id_moneda . '' . $total; ?></b></td>
         </tr>
-        <?php
+    <?php
 
     }
 }
@@ -230,13 +230,13 @@ function latest_compras()
         list($Y, $m, $d)   = explode("-", $date);
         $fecha             = $d . "-" . $m . "-" . $Y;
         $total             = number_format($rw['monto_factura'], 2);
-        ?>
+    ?>
         <tr>
             <td><a href="editar_venta.php?id_factura=<?php echo $id_factura; ?>" data-toggle="tooltip" title="Ver Factura"><label class='badge badge-primary'><?php echo $numero_factura; ?></label></a></td>
             <td><?php echo $fecha; ?></td>
             <td class='text-left'><b><?php echo $id_moneda . '' . $total; ?></b></td>
         </tr>
-        <?php
+<?php
 
     }
 }
@@ -278,29 +278,26 @@ function guardar_historial($id_producto, $user_id, $fecha, $nota, $reference, $q
     $sql = "INSERT INTO historial_productos (id_historial, id_producto, id_users, fecha_historial, nota_historial, referencia_historial, cantidad_historial, tipo_historial)
   VALUES (NULL, '$id_producto', '$user_id', '$fecha', '$nota', '$reference', '$quantity','$tipo');";
     $query = mysqli_query($conexion, $sql);
-
 }
 function agregar_stock($id_producto, $quantity)
 {
     global $conexion;
-    $update = mysqli_query($conexion, "update productos set stock_producto=stock_producto+'$quantity' where id_producto='$id_producto' and inv_producto=0");
+    $update = mysqli_query($conexion, "update productos set stock_producto=stock_producto+'$quantity' where id_producto='$id_producto'");
     if ($update) {
         return 1;
     } else {
         return 0;
     }
-
 }
 function eliminar_stock($id_producto, $quantity)
 {
     global $conexion;
-    $update = mysqli_query($conexion, "update productos set stock_producto=stock_producto-'$quantity' where id_producto='$id_producto' and inv_producto=0");
+    $update = mysqli_query($conexion, "update productos set stock_producto=stock_producto-'$quantity' where id_producto='$id_producto'");
     if ($update) {
         return 1;
     } else {
         return 0;
     }
-
 }
 /*--------------------------------------------------------------*/
 /* Control de KARDEX
@@ -311,7 +308,6 @@ function guardar_salidas($fecha, $id_producto, $cant_salida, $costo_salida, $tot
     $sql = "INSERT INTO kardex (fecha_kardex, producto_kardex, cant_salida, costo_salida, total_salida, cant_saldo, costo_saldo, total_saldo, added_kardex, users_kardex, tipo_movimiento)
   VALUES ('$fecha','$id_producto','$cant_salida','$costo_salida','$total_salida', '$cant_saldo','$costo_saldo','$total_saldo','$fecha_added','$users','$tipo');";
     $query = mysqli_query($conexion, $sql);
-
 }
 function guardar_entradas($fecha, $id_producto, $cant_entrada, $costo_entrada, $total_entrada, $cant_saldo, $costo_promedio, $total_saldo, $fecha_added, $users, $tipo)
 {
@@ -319,7 +315,6 @@ function guardar_entradas($fecha, $id_producto, $cant_entrada, $costo_entrada, $
     $sql = "INSERT INTO kardex (fecha_kardex, producto_kardex, cant_entrada, costo_entrada, total_entrada, cant_saldo, costo_saldo, total_saldo, added_kardex, users_kardex, tipo_movimiento)
   VALUES ('$fecha','$id_producto','$cant_entrada','$costo_entrada','$total_entrada', '$cant_saldo','$costo_promedio','$total_saldo','$fecha_added','$users','$tipo');";
     $query = mysqli_query($conexion, $sql);
-
 }
 function formato($valor)
 {

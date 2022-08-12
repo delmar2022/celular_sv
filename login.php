@@ -36,9 +36,9 @@ if ($login->isUserLoggedIn() == true) {
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
         <meta name="author" content="Coderthemes">
 
-        <link rel="shortcut icon" href="assets/images/favicon.png">
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-        <title>Facturación v.3</title>
+        <title>Mr Phone</title>
 
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
 
@@ -72,8 +72,8 @@ if ($login->isUserLoggedIn() == true) {
             <div id="bg-success" class="panel-collapse collapse show">
                 <div class="portlet-body">
                 <div id="resultados_ajax"></div><br>
-                 <div align="center">
-                    <img src="img/logo.png" class="img-responsive" alt="profile-image" width="400px" height="100px">
+                 <div align="left">
+                    <img src="img/logo.jpg" class="img-responsive" alt="profile-image" width="325px" height="100px">
                 </div>
 <br>
                 <form method="post" accept-charset="utf-8" action="login.php" name="loginform" class="form-signin">

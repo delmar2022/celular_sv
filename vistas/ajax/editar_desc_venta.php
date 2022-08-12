@@ -21,29 +21,29 @@ if (empty($_POST['id_tmp'])) {
 
 if (isset($errors)) {
 
-    ?>
+?>
     <div class="alert alert-danger" role="alert">
         <strong>Error!</strong>
         <?php
-foreach ($errors as $error) {
-        echo $error;
-    }
-    ?>
+        foreach ($errors as $error) {
+            echo $error;
+        }
+        ?>
     </div>
-    <?php
+<?php
 }
 if (isset($messages)) {
 
-    ?>
+?>
     <div class="alert alert-success" role="alert">
         <strong>¡Bien hecho!</strong>
         <?php
-foreach ($messages as $message) {
-        echo $message;
-    }
-    ?>
+        foreach ($messages as $message) {
+            echo $message;
+        }
+        ?>
     </div>
-    <?php
+<?php
 }
 
 ?>

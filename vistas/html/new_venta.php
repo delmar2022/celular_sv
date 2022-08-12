@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_login_status']) and $_SESSION['user_login_status'] != 1) {
-    header("location: ../../login.php");
-    exit;
+	header("location: ../../login.php");
+	exit;
 }
 /* Connect To Database*/
 require_once "../db.php"; //Contiene las variables de configuracion para conectar a la base de datos
@@ -22,19 +22,26 @@ $doc_cliente    = get_row('perfil', 'doc_cliente', 'id_perfil', 1);
 //consulta para elegir el comprobante
 $query = $conexion->query("select * from comprobantes");
 $tipo  = array();
-while ($r = $query->fetch_object()) {$tipo[] = $r;}
+while ($r = $query->fetch_object()) {
+	$tipo[] = $r;
+}
 $query_empresa = mysqli_query($conexion, "select * from perfil, clientes where perfil.cliente_id= clientes.id_cliente  and perfil.id_perfil=1");
 $row           = mysqli_fetch_array($query_empresa);
 ?>
 
-<?php require 'includes/header_start.php';?>
-
-<?php require 'includes/header_end.php';?>
+<?php require 'includes/header_start.php'; ?>
+<style>
+	.modal-lg {
+		max-width: 80% !important;
+	}
+</style>
+<?php require 'includes/header_end.php'; ?>
 
 <!-- Begin page -->
-<div id="wrapper" class="forced enlarged"> <!-- DESACTIVA EL MENU -->
+<div id="wrapper" class="forced enlarged">
+	<!-- DESACTIVA EL MENU -->
 
-	<?php require 'includes/menu.php';?>
+	<?php require 'includes/menu.php'; ?>
 
 	<!-- ============================================================== -->
 	<!-- Start right Content here -->
@@ -44,7 +51,7 @@ $row           = mysqli_fetch_array($query_empresa);
 		<div class="content">
 			<div class="container">
 				<?php if ($permisos_ver == 1) {
-    ?>
+				?>
 					<div class="col-lg-12">
 						<div class="portlet">
 							<div class="portlet-heading bg-primary">
@@ -55,14 +62,14 @@ $row           = mysqli_fetch_array($query_empresa);
 									<div class="btn-group dropdown">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"> <i class='fa fa-dollar'></i> Caja<i class="caret"></i> </button>
 										<div class="dropdown-menu dropdown-menu-right">
-											<?php if ($permisos_editar == 1) {?>
-												<a class="dropdown-item text-muted" href="#" data-toggle="modal" data-target="#caja" onclick="obtener_caja('<?php echo $user_id; ?>');"><i class='fa fa-search'></i>  Ver Caja</a>
-												<a class="dropdown-item text-muted" href="#" data-toggle="modal" data-target="#cerrarCaja" onclick="obtenerx_caja('<?php echo $user_id; ?>');"><i class='ti-harddrives'></i>  Cerrar Caja</a>
+											<?php if ($permisos_editar == 1) { ?>
+												<a class="dropdown-item text-muted" href="#" data-toggle="modal" data-target="#caja" onclick="obtener_caja('<?php echo $user_id; ?>');"><i class='fa fa-search'></i> Ver Caja</a>
+												<a class="dropdown-item text-muted" href="#" data-toggle="modal" data-target="#cerrarCaja" onclick="obtenerx_caja('<?php echo $user_id; ?>');"><i class='ti-harddrives'></i> Cerrar Caja</a>
 											<?php }
-    if ($permisos_eliminar == 1) {?>
+											if ($permisos_eliminar == 1) { ?>
 												<a class="dropdown-item text-muted" href="#" data-toggle="modal" data-target="#myModal2" onclick="imprimir_factura('<?php echo $user_id; ?>');"><i class='fa fa-inbox'></i> Corte de Caja</a>
 											<?php }
-    ?>
+											?>
 
 
 										</div>
@@ -73,13 +80,13 @@ $row           = mysqli_fetch_array($query_empresa);
 							<div id="bg-primary" class="panel-collapse collapse show">
 								<div class="portlet-body">
 									<?php
-include "../modal/buscar_productos_ventas.php";
-    include "../modal/registro_cliente.php";
-    include "../modal/registro_producto.php";
-    include "../modal/caja.php";
-    include "../modal/anular_factura.php";
-    include "../modal/cerrar_caja.php";
-    ?>
+									include "../modal/buscar_productos_ventas.php";
+									include "../modal/registro_cliente.php";
+									include "../modal/registro_producto.php";
+									include "../modal/caja.php";
+									include "../modal/anular_factura.php";
+									include "../modal/cerrar_caja.php";
+									?>
 									<div class="row">
 										<div class="col-lg-8">
 											<div class="card-box">
@@ -96,7 +103,7 @@ include "../modal/buscar_productos_ventas.php";
 															<label for="condiciones" class="control-label">CODIGO:</label>
 															<div class="col-md-5" align="left">
 																<div class="input-group">
-																	<input style=" background-color:#FADBD8; border-radius: 5px; border: 1px solid #39c;" type="text" class="form-control" id="barcode" autocomplete="off"  tabindex="1" autofocus="true"  >
+																	<input style=" background-color:#FADBD8; border-radius: 5px; border: 1px solid #39c;" type="text" class="form-control" id="barcode" autocomplete="off" tabindex="1" autofocus="true">
 																	<span class="input-group-btn">
 																		<button type="submit" class="btn btn-default"><span class="fa fa-barcode"></span></button>
 																	</span>
@@ -127,9 +134,11 @@ include "../modal/buscar_productos_ventas.php";
 															<div class="col-12">
 																<label for="fiscal">CLIENTE</label>
 																<div class="input-group">
-																	<input style=" background-color:#D4E6F1; border-radius: 5px; border: 1px solid #39c;" type="text" id="nombre_cliente" class="form-control" placeholder="Buscar Cliente" required  tabindex="2" value="<?php echo $row["nombre_cliente"]; ?>" onClick="this.select()">
+																	<input style=" background-color:#D4E6F1; border-radius: 5px; border: 1px solid #39c;" type="text" id="nombre_cliente" class="form-control" placeholder="Buscar Cliente" required tabindex="2" value="<?php echo $row["nombre_cliente"]; ?>" onClick="this.select()">
 																	<span class="input-group-btn">
-																		<button type="button" class="btn waves-effect waves-light btn-success" data-toggle="modal" data-target="#nuevoCliente"><li class="fa fa-plus"></li></button>
+																		<button type="button" class="btn waves-effect waves-light btn-success" data-toggle="modal" data-target="#nuevoCliente">
+																			<li class="fa fa-plus"></li>
+																		</button>
 																	</span>
 																	<input id="id_cliente" name="id_cliente" type='hidden' value="<?php echo $row["id_cliente"]; ?>">
 																</div>
@@ -138,25 +147,20 @@ include "../modal/buscar_productos_ventas.php";
 														<div class="row">
 															<div class="col-md-6">
 																<div class="form-group">
-																	<label for="fiscal"><?php echo $doc_cliente; ?></label>
-																	<input type="text" class="form-control" autocomplete="off" id="rnc" name="rnc" disabled="true" value="<?php echo $row["fiscal_cliente"]; ?>">
-																</div>
-															</div>
-															<div class="col-md-6">
-																<div class="form-group">
 																	<label for="id_comp" class="control-label">FACTURA:</label>
 																	<div id="resultados6"></div><!-- Carga los datos ajax -->
 																</div>
 															</div>
-
-														</div>
-														<div class="row">
 															<div class="col-md-6">
 																<div class="form-group">
 																	<label for="fiscal">NO.FACTURA</label>
 																	<div id="outer_comprobante"></div><!-- Carga los datos ajax -->
 																</div>
 															</div>
+
+														</div>
+														<div class="row">
+
 															<!--<div class="col-md-6">
 																<div class="form-group">
 																	<div id="resultados4"></div>
@@ -174,8 +178,6 @@ include "../modal/buscar_productos_ventas.php";
 																	</select>
 																</div>
 															</div>
-														</div>
-														<div class="row">
 															<div class="col-md-6">
 																<div class="form-group">
 																	<div id="resultados3"></div><!-- Carga los datos ajax del incremento de la fatura -->
@@ -204,25 +206,25 @@ include "../modal/buscar_productos_ventas.php";
 							</div>
 						</div>
 					</div>
-					<?php
-} else {
-    ?>
+				<?php
+				} else {
+				?>
 					<section class="content">
 						<div class="alert alert-danger" align="center">
 							<h3>Acceso denegado! </h3>
 							<p>No cuentas con los permisos necesario para acceder a este módulo.</p>
 						</div>
 					</section>
-					<?php
-}
-?>
+				<?php
+				}
+				?>
 
 			</div>
 			<!-- end container -->
 		</div>
 		<!-- end content -->
 
-		<?php require 'includes/pie.php';?>
+		<?php require 'includes/pie.php'; ?>
 
 	</div>
 	<!-- ============================================================== -->
@@ -252,118 +254,116 @@ include "../modal/buscar_productos_ventas.php";
 				$('#id_cliente').val(ui.item.id_cliente);
 				$('#nombre_cliente').val(ui.item.nombre_cliente);
 				$('#rnc').val(ui.item.fiscal_cliente);
-				$.Notification.notify('custom','bottom right','EXITO!', 'CLIENTE AGREGADO CORRECTAMENTE')
+				$.Notification.notify('custom', 'bottom right', 'EXITO!', 'CLIENTE AGREGADO CORRECTAMENTE')
 			}
 		});
 	});
 
-	$("#nombre_cliente" ).on( "keydown", function( event ) {
-		if (event.keyCode== $.ui.keyCode.LEFT || event.keyCode== $.ui.keyCode.RIGHT || event.keyCode== $.ui.keyCode.UP || event.keyCode== $.ui.keyCode.DOWN || event.keyCode== $.ui.keyCode.DELETE || event.keyCode== $.ui.keyCode.BACKSPACE )
-		{
-			$("#id_cliente" ).val("");
-			$("#rnc" ).val("");
+	$("#nombre_cliente").on("keydown", function(event) {
+		if (event.keyCode == $.ui.keyCode.LEFT || event.keyCode == $.ui.keyCode.RIGHT || event.keyCode == $.ui.keyCode.UP || event.keyCode == $.ui.keyCode.DOWN || event.keyCode == $.ui.keyCode.DELETE || event.keyCode == $.ui.keyCode.BACKSPACE) {
+			$("#id_cliente").val("");
+			$("#rnc").val("");
 			$("#resultados4").load("../ajax/tipo_doc.php");
 		}
-		if (event.keyCode==$.ui.keyCode.DELETE){
-			$("#nombre_cliente" ).val("");
-			$("#id_cliente" ).val("");
-			$("#rnc" ).val("");
+		if (event.keyCode == $.ui.keyCode.DELETE) {
+			$("#nombre_cliente").val("");
+			$("#id_cliente").val("");
+			$("#rnc").val("");
 		}
 	});
 </script>
 <!-- FIN -->
 <script>
-// print order function
-function printOrder(id_factura) {
-	//$('#modal_vuelto').modal('hide');//CIERRA LA MODAL
-	if (id_factura) {
-		$.ajax({
-			url: '../pdf/documentos/imprimir_venta.php',
-			type: 'post',
-			data: {
-				id_factura: id_factura
-			},
-			dataType: 'text',
-			success: function(response) {
-				var mywindow = window.open('', 'Stock Management System', 'height=400,width=600');
-				mywindow.document.write('<html><head><title>Facturación</title>');
-				mywindow.document.write('</head><body>');
-				mywindow.document.write(response);
-				mywindow.document.write('</body></html>');
-                mywindow.document.close(); // necessary for IE >= 10
-                mywindow.focus(); // necessary for IE >= 10
-                mywindow.print();
-                mywindow.close();
-            } // /success function
+	// print order function
+	function printOrder(id_factura) {
+		//$('#modal_vuelto').modal('hide');//CIERRA LA MODAL
+		if (id_factura) {
+			$.ajax({
+				url: '../pdf/documentos/imprimir_venta.php',
+				type: 'post',
+				data: {
+					id_factura: id_factura
+				},
+				dataType: 'text',
+				success: function(response) {
+					var mywindow = window.open('', 'Stock Management System', 'height=400,width=600');
+					mywindow.document.write('<html><head><title>Facturación</title>');
+					mywindow.document.write('</head><body>');
+					mywindow.document.write(response);
+					mywindow.document.write('</body></html>');
+					mywindow.document.close(); // necessary for IE >= 10
+					mywindow.focus(); // necessary for IE >= 10
+					mywindow.print();
+					mywindow.close();
+				} // /success function
 
-        }); // /ajax function to fetch the printable order
-    } // /if orderId
-} // /print order function
+			}); // /ajax function to fetch the printable order
+		} // /if orderId
+	} // /print order function
 </script>
 <script>
-// print order function
-function printFactura(id_factura) {
-	//$('#modal_vuelto').modal('hide');
-	if (id_factura) {
-		$.ajax({
-			url: '../pdf/documentos/imprimir_factura_venta.php',
-			type: 'post',
-			data: {
-				id_factura: id_factura
-			},
-			dataType: 'text',
-			success: function(response) {
-				//var mywindow = window.open('logo.png', 'Stock Management System', 'height=400,width=600');
-				var WinPrint = window.open('', 'FACTURA DE VENTA', 'width=800,height=650');
-				WinPrint.document.write(response);
-				WinPrint.document.close();
-				//WinPrint.print();
-				//WinPrint.close();
-                //mywindow.document.close(); // necessary for IE >= 10
+	// print order function
+	function printFactura(id_factura) {
+		//$('#modal_vuelto').modal('hide');
+		if (id_factura) {
+			$.ajax({
+				url: '../pdf/documentos/imprimir_factura_venta.php',
+				type: 'post',
+				data: {
+					id_factura: id_factura
+				},
+				dataType: 'text',
+				success: function(response) {
+					//var mywindow = window.open('logo.png', 'Stock Management System', 'height=400,width=600');
+					var WinPrint = window.open('', 'FACTURA DE VENTA', 'width=800,height=650');
+					WinPrint.document.write(response);
+					WinPrint.document.close();
+					//WinPrint.print();
+					//WinPrint.close();
+					//mywindow.document.close(); // necessary for IE >= 10
 
-            } // /success function
+				} // /success function
 
-        }); // /ajax function to fetch the printable order
-    } // /if orderId
-} // /print order function
+			}); // /ajax function to fetch the printable order
+		} // /if orderId
+	} // /print order function
 </script>
 <script>
 	function obtener_caja(user_id) {
-		$(".outer_div3").load("../modal/carga_caja.php?user_id=" + user_id);//carga desde el ajax
+		$(".outer_div3").load("../modal/carga_caja.php?user_id=" + user_id); //carga desde el ajax
 	}
 </script>
 <script>
 	function cierre_caja(user_id) {
-		$(".outer_div4").load("../modal/carga_cierre.php?user_id=" + user_id);//carga desde el ajax
+		$(".outer_div4").load("../modal/carga_cierre.php?user_id=" + user_id); //carga desde el ajax
 	}
 </script>
 <script>
-	function showDiv(select){
-		if(select.value==4){
+	function showDiv(select) {
+		if (select.value == 4) {
 			$("#resultados3").load("../ajax/carga_prima.php");
-		} else{
+		} else {
 			$("#resultados3").load("../ajax/carga_resibido.php");
 		}
 	}
-	function comprobar(select){
+
+	function comprobar(select) {
 		var rnc = $("#rnc").val();
-		if(select.value==1 && rnc==''){
-			$.Notification.notify('warning','bottom center','NOTIFICACIÓN', 'AL CLIENTE SELECCIONADO NO SE LE PUEDE IMPRIR LA FACTURA, NO TIENE RNC/DEDULA REGISTRADO')
+		if (select.value == 1 && rnc == '') {
+			$.Notification.notify('warning', 'bottom center', 'NOTIFICACIÓN', 'AL CLIENTE SELECCIONADO NO SE LE PUEDE IMPRIR LA FACTURA, NO TIENE RNC/DEDULA REGISTRADO')
 			$("#resultados4").load("../ajax/tipo_doc.php");
-		} else{
+		} else {
 			//$("#resultados3").load("../ajax/carga_resibido.php");
 		}
 	}
 </script>
 <script>
-	function getval(sel)
-	{
+	function getval(sel) {
 		$.Notification.notify('success', 'bottom center', 'NOTIFICACIÓN', 'CAMBIO DE COMPROBANTE')
-		$("#outer_comprobante").load("../ajax/carga_correlativos.php?id_comp="+sel.value);
+		$("#outer_comprobante").load("../ajax/carga_correlativos.php?id_comp=" + sel.value);
 
 	}
 </script>
 
 <?php require 'includes/footer_end.php'
 ?>
-
